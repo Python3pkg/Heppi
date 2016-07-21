@@ -56,6 +56,8 @@ def get_options():
                      help="Increase verbosity (specify multiple times for more)")
     parser.add_option("--cut-card", dest="cut_card",default='',
                       help="Specify all the cut through a cut-card. This might be included also in the plotcard. Check the documentation")
+    parser.add_option("-c","--addcut", dest="addedcuts",default='', 
+                      help="Add a cut to the cutflow directly from the command line. This will be applied to all hists, including variable that is cut on")
     return parser.parse_args()
 
 if __name__ == "__main__":
@@ -65,6 +67,7 @@ if __name__ == "__main__":
     heppi.allloghist    = opt.allloghist
     heppi.sampledir     = opt.sampledir
     heppi.cut_card      = opt.cut_card
+    heppi.addedcuts     = opt.addedcuts
     if len(opt.title_on_plot) != 0:
         heppi.title_on_plot = opt.title_on_plot.split(',')
         
@@ -111,10 +114,10 @@ if __name__ == "__main__":
             'red', attrs=['bold']
         ))
         for var in heppi.variables:
-            heppi.draw_instack(var,heppi.options.label,heppi.selection['title'])
+            heppi.draw_instack(var,heppi.options.label,heppi.selection['title']+heppi.options.addedcuts)
     else:
         if opt.variable != '':
-            heppi.draw_instack(opt.variable,heppi.options.label,heppi.selection['title'])
+            heppi.draw_instack(opt.variable,heppi.options.label,heppi.selection['title']+heppi.options.addedcuts)
             if opt.display:
                 raw_input('... Press any key to exit ...')
         else:
