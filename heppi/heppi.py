@@ -234,7 +234,9 @@ def makeRatioCanvas(name='_ratio_'):
     ROOT.SetOwnership(paddw,0)
     return Rcanv
 #---------------------------------------------------------
-def draw_categories(categories = [], miny=0, maxy=100):
+def draw_categories(categories = None, miny=0, maxy=100):
+    if categories is None:
+        categories = []
     for cat in categories:
         line = ROOT.TLine()
         line.SetLineColor(129)
@@ -242,9 +244,13 @@ def draw_categories(categories = [], miny=0, maxy=100):
         line.SetLineWidth(2)
         line.DrawLine(cat,miny,cat,maxy)
 #---------------------------------------------------------
-def MakeStatProgression(myHisto,histDwSys={},histUpSys={},
+def MakeStatProgression(myHisto,histDwSys=None,histUpSys=None,
                         title="", systematic_only=True, combine_with_systematic=True):
     """This function returns a function with the statistical precision in each bin"""
+    if histDwSys is None:
+        histDwSys = {}
+    if histUpSys is None:
+        histUpSys = {}
     statPrecision = myHisto.Clone('_ratioErrors_')
     systPrecision = myHisto.Clone('_ratioSysErrors_')
     statPrecision.SetTitle(title)
@@ -291,11 +297,15 @@ def MakeStatProgression(myHisto,histDwSys={},histUpSys={},
     return statPrecision
 
 #---------------------------------------------------------
-def drawStatErrorBand(myHisto,histDwSys={},histUpSys={},systematic_only=True, combine_with_systematic=True):
+def drawStatErrorBand(myHisto,histDwSys=None,histUpSys=None,systematic_only=True, combine_with_systematic=True):
     """
     Draw this histogram with the statistical
     precision error in each bin
     """
+    if histDwSys is None:
+        histDwSys = {}
+    if histUpSys is None:
+        histUpSys = {}
     statPrecision = myHisto.Clone('_statErrors_')
     ROOT.SetOwnership(statPrecision,0)
     statPrecision.SetFillColorAlpha(settings.error_band_color,settings.error_band_opacity)
