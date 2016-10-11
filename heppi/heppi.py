@@ -649,7 +649,7 @@ def draw_instack(variable, label='VBF', select=''):
                 )
                 histUp = ROOT.gDirectory.Get('h_UpSys_' + sysname +'_'+ varname )
                 histUp.SetDirectory(0)
-                if histUpSys[sysname] == None:
+                if histUpSys[sysname] is None:
                     histUpSys[sysname] = histUp
                 else:
                     histUpSys[sysname].Add(histUp)
@@ -668,7 +668,7 @@ def draw_instack(variable, label='VBF', select=''):
                 )
                 histDw = ROOT.gDirectory.Get('h_DwSys_' + sysname +'_'+ varname )
                 histDw.SetDirectory(0)
-                if histDwSys[sysname] == None:
+                if histDwSys[sysname] is None:
                     histDwSys[sysname] = histDw
                 else:
                     histDwSys[sysname].Add(histDw)
@@ -691,7 +691,7 @@ def draw_instack(variable, label='VBF', select=''):
                 )
                 histUp = ROOT.gDirectory.Get('h_weight_UpSys_' + sysname +'_'+ varname)
                 histUp.SetDirectory(0)
-                if histUpSys[sys]    == None:
+                if histUpSys[sys]    is None:
                     histUpSys[sys] = histUp
                 else:
                     histUpSys[sys].Add(histUp)
@@ -714,7 +714,7 @@ def draw_instack(variable, label='VBF', select=''):
                 )
                 histDw = ROOT.gDirectory.Get('h_weight_DwSys_' + sysname +'_'+ varname)
                 histDw.SetDirectory(0)
-                if histDwSys[sys]    == None:
+                if histDwSys[sys]    is None:
                     histDwSys[sys] = histDw
                 else:
                     histDwSys[sys].Add(histDw)
@@ -825,7 +825,7 @@ def draw_instack(variable, label='VBF', select=''):
     errorHist.Draw('E2')
     ratioHist = None
     sig_and_bkg_ratio = []
-    if hdata==None:
+    if hdata isNone:
         ratioHist = hstack.GetStack().Last().Clone('_temp_')
         ratioHist.Clear()
         ratioHist.SetLineColorAlpha(0,0)
