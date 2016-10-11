@@ -4,10 +4,11 @@ Heppi
 
 .. image:: https://img.shields.io/pypi/v/heppi.svg
         :target: https://pypi.python.org/pypi/heppi
-
 .. image:: https://img.shields.io/travis/yhaddad/Heppi.svg
         :target: https://travis-ci.org/yhaddad/Heppi
-
+.. image:: https://www.quantifiedcode.com/api/v1/project/6a3cdc5517f1494e958be59ba9347536/badge.svg
+  :target: https://www.quantifiedcode.com/app/project/6a3cdc5517f1494e958be59ba9347536
+  :alt: Code issues
 .. image:: https://readthedocs.org/projects/heppi/badge/?version=latest
         :target: https://readthedocs.org/projects/heppi/?badge=latest
         :alt: Documentation Status
