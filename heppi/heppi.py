@@ -68,7 +68,7 @@ def read_plotcard(plotcard, cut_card=''):
         config = json.loads(jsmin(f.read()))
     if cut_card != '':
         logger.info(' ---- cut card is specified ----')
-        logger.info(' -- %20s ' % ( cut_card )        )
+        logger.info(' -- {0:20!s} '.format(( cut_card ))        )
         with open(cut_card) as f:
             cuts   = json.loads(jsmin(f.read()))
             config = merge(config, cuts)
@@ -81,7 +81,7 @@ def read_plotcard(plotcard, cut_card=''):
                 if ':=' in var:
                     varname  = var.split(':=')[0]
                     formula  = var.split(':=')[1]
-                logger.info(' -- %20s  %15s' % (
+                logger.info(' -- {0:20!s}  {1:15!s}'.format(
                     varname ,
                     config[key][var]['hist']))
                 variables[varname] = config[key][var]
@@ -95,11 +95,11 @@ def read_plotcard(plotcard, cut_card=''):
             logger.info(' ---- book processes ----------')
             for proc in config[key]:
                 samples[proc] = config[key][proc]
-                logger.info(' -- %12s %12s' % (proc, samples[proc].get('cut','')))
+                logger.info(' -- {0:12!s} {1:12!s}'.format(proc, samples[proc].get('cut','')))
         if 'selection' in key:
             logger.info(' ---- book selections ---------')
             selection = config[key]
-            logger.info(' -- %12s' % (selection['title']))
+            logger.info(' -- {0:12!s}'.format((selection['title'])))
         if 'labels' in key:
             plotlabels = config[key]
             if title_on_plot != []:
@@ -113,15 +113,15 @@ def read_plotcard(plotcard, cut_card=''):
             treesDwSys  = config[key].get('DwTrees' ,[])
             branchUpSys = config[key].get('UpBranch',[])
             branchDwSys = config[key].get('DwBranch',[])
-            logger.info(' -- tree Up :: %12s' % ( treesUpSys) )
-            logger.info(' -- tree Dw :: %12s' % ( treesDwSys) )
-            logger.info(' -- branch Up :: %12s' % ( branchUpSys) )
-            logger.info(' -- branch Dw :: %12s' % ( branchDwSys) )
+            logger.info(' -- tree Up :: {0:12!s}'.format(( treesUpSys)) )
+            logger.info(' -- tree Dw :: {0:12!s}'.format(( treesDwSys)) )
+            logger.info(' -- branch Up :: {0:12!s}'.format(( branchUpSys)) )
+            logger.info(' -- branch Dw :: {0:12!s}'.format(( branchDwSys)) )
         if 'globalOptions' in key:
             logger.info(' ---- book selections ---------')
             globalOptions = config[key]
 
-            logger.info(' -- %12s' % ( globalOptions.get("ratio_range",[])) )
+            logger.info(' -- {0:12!s}'.format(( globalOptions.get("ratio_range",[]))) )
     logger.info(' ------------------------------')
     
 # ---- create a cut flow except the considered variables
@@ -139,10 +139,10 @@ def variable_cutflow(variable, select=''):
 def print_cutflow():
     for var in variables:
         if (len(variables[var]['cut'])!=0):
-            logger.info('-- %20s: %12s' % (var, variables[var]['cut'] ))
+            logger.info('-- {0:20!s}: {1:12!s}'.format(var, variables[var]['cut'] ))
     
     if len(addedcuts) != 0:
-        logger.info('-- %20s: %12s' % ('ADDED GLOBAL CUTS', addedcuts))
+        logger.info('-- {0:20!s}: {1:12!s}'.format('ADDED GLOBAL CUTS', addedcuts))
     logger.info(' ------------------------------')
 #---------------------------------------------------------
 def find_between( s, first, last ):
@@ -198,7 +198,7 @@ def fformat(num):
     0.32112 --> 0.32
     """
     if num != 1:
-        s = ('%g'% (num)).rstrip('0').rstrip('.')
+        s = ('{0:g}'.format((num))).rstrip('0').rstrip('.')
     else:
         s = ''
     return s#('%1.2f' % float(s) ) 
@@ -544,8 +544,8 @@ def book_trees(select = ''):
         samples[proc].update({'_root_tree_sysDw_' : chainSysDw})
         samples[proc].update({'_root_tree_sysUp_' : chainSysUp})
         
-    logger.info('-- sig_chain.GetEntries() = %i' % sig_chain.GetEntries())
-    logger.info('-- bkg_chain.GetEntries() = %i' % bkg_chain.GetEntries())
+    logger.info('-- sig_chain.GetEntries() = {0:d}'.format(sig_chain.GetEntries()))
+    logger.info('-- bkg_chain.GetEntries() = {0:d}'.format(bkg_chain.GetEntries()))
     return (sig_chain, bkg_chain)
         
         
@@ -612,11 +612,11 @@ def draw_instack(variable, label='VBF', select=''):
     if  options.nocuts:
         histfilename = histfilename + '_nocuts'
     # loop over the samples
-    bar    = ProgressBar(widgets=[colored('-- variables:: %20s   ' % variable, 'green'),
+    bar    = ProgressBar(widgets=[colored('-- variables:: {0:20!s}   '.format(variable), 'green'),
                                   Percentage(),'  ' ,Bar('>'), ' ', ETA()], term_width=100)
     ordsam = OrderedDict(sorted(samples.items(), key=lambda x: x[1]['order']))
     for proc in bar(ordsam):
-        logger.debug(' -- %17s  %12s ' % (proc,  samples[proc].get('name')))
+        logger.debug(' -- {0:17!s}  {1:12!s} '.format(proc, samples[proc].get('name')))
         
         tree       = samples[proc].get('_root_tree_')
         sample_cut = samples[proc].get('cut','')
@@ -632,7 +632,7 @@ def draw_instack(variable, label='VBF', select=''):
             tree.Project(
                 'h_' + varname + variables[variable]['hist'],
                 formula,
-                _cutflow_.replace('weight','weight*%f*%f*%f*%s' % ( treeinfo.get('kfactor',1.0),
+                _cutflow_.replace('weight','weight*{0:f}*{1:f}*{2:f}*{3!s}'.format(treeinfo.get('kfactor',1.0),
                                                                  treeinfo.get('lumi'   ,1.0),
                                                                  samples[proc].get('kfactor',1.0),
                                                                  _sample_weight_))
@@ -652,7 +652,7 @@ def draw_instack(variable, label='VBF', select=''):
                 treeUp.Project(
                     'h_UpSys_' + sysname +'_'+ varname + variables[variable]['hist'],
                     formula,
-                    _cutflow_.replace('weight','weight*%f*%f*%f*%s' % ( treeinfo.get('kfactor',1.0),
+                    _cutflow_.replace('weight','weight*{0:f}*{1:f}*{2:f}*{3!s}'.format(treeinfo.get('kfactor',1.0),
                                                                      treeinfo.get('lumi'   ,1.0),
                                                                      samples[proc].get('kfactor',1.0),
                                                                      _sample_weight_))
@@ -671,7 +671,7 @@ def draw_instack(variable, label='VBF', select=''):
                 treeDw.Project(
                     'h_DwSys_' + sysname +'_'+ varname + variables[variable]['hist'],
                     formula,
-                    _cutflow_.replace('weight','weight*%f*%f*%f*%s' % ( treeinfo.get('kfactor',1.0),
+                    _cutflow_.replace('weight','weight*{0:f}*{1:f}*{2:f}*{3!s}'.format(treeinfo.get('kfactor',1.0),
                                                                      treeinfo.get('lumi'   ,1.0),
                                                                      samples[proc].get('kfactor',1.0),
                                                                      _sample_weight_))
@@ -685,7 +685,7 @@ def draw_instack(variable, label='VBF', select=''):
         # ======= weight systematics
         for sys in branchUpSys:
             if proc != 'Data' and samples[proc].get('dosysts',True):
-                print 'sys ::', sys, ' :: treeUp ::', tree, ' :: ', tree.GetEntries(), ' :: ', 'weight*%f*%f*%s*%f*%s' % ( treeinfo.get('kfactor',1.0),
+                print 'sys ::', sys, ' :: treeUp ::', tree, ' :: ', tree.GetEntries(), ' :: ', 'weight*{0:f}*{1:f}*{2!s}*{3:f}*{4!s}'.format(treeinfo.get('kfactor',1.0),
                                                                                                                         treeinfo.get('lumi'   ,1.0),
                                                                                                                         sys,
                                                                                                                         samples[proc].get('kfactor',1.0),
@@ -693,7 +693,7 @@ def draw_instack(variable, label='VBF', select=''):
                 tree.Project(
                     'h_weight_UpSys_' + sysname +'_'+ varname + variables[variable]['hist'],
                     formula,
-                    _cutflow_.replace('weight','weight*%f*%f*%s*%f*%s' % ( treeinfo.get('kfactor',1.0),
+                    _cutflow_.replace('weight','weight*{0:f}*{1:f}*{2!s}*{3:f}*{4!s}'.format(treeinfo.get('kfactor',1.0),
                                                                         treeinfo.get('lumi'   ,1.0),
                                                                         sys,
                                                                         samples[proc].get('kfactor',1.0),
@@ -708,7 +708,7 @@ def draw_instack(variable, label='VBF', select=''):
 
         for sys in branchDwSys:
             if proc != 'Data' and samples[proc].get('dosysts',True):
-                print 'sys ::', sys, ' :: treeUp ::', tree, ' :: ', tree.GetEntries(), ' :: ', 'weight*%f*%f*%s*%f*%s' % ( treeinfo.get('kfactor',1.0),
+                print 'sys ::', sys, ' :: treeUp ::', tree, ' :: ', tree.GetEntries(), ' :: ', 'weight*{0:f}*{1:f}*{2!s}*{3:f}*{4!s}'.format(treeinfo.get('kfactor',1.0),
                                                                                                                         treeinfo.get('lumi'   ,1.0),
                                                                                                                         sys,
                                                                                                                         samples[proc].get('kfactor',1.0),
@@ -716,7 +716,7 @@ def draw_instack(variable, label='VBF', select=''):
                 tree.Project(
                     'h_weight_DwSys_' + sysname +'_'+ varname + variables[variable]['hist'],
                     formula,
-                    _cutflow_.replace('weight','weight*%f*%f*%s*%f*%s' % ( treeinfo.get('kfactor',1.0),
+                    _cutflow_.replace('weight','weight*{0:f}*{1:f}*{2!s}*{3:f}*{4!s}'.format(treeinfo.get('kfactor',1.0),
                                                                         treeinfo.get('lumi'   ,1.0),
                                                                         sys,
                                                                         samples[proc].get('kfactor',1.0),
@@ -744,7 +744,7 @@ def draw_instack(variable, label='VBF', select=''):
             histos.append(hist)
             if samples[proc].get('kfactor',1) !=1:
                 legend.AddEntry(hist,
-                                samples[proc]["title"] + ("#times%i"%samples[proc].get('kfactor',1)),
+                                samples[proc]["title"] + ("#times{0:d}".format(samples[proc].get('kfactor',1))),
                                 "l" );
             else:
                 legend.AddEntry( hist, samples[proc]["title"], "l" );
@@ -771,7 +771,7 @@ def draw_instack(variable, label='VBF', select=''):
     htmp   = histos[0].Clone('__htmp__')
     bounds = [float(s) for s in re.findall('[-+]?\d*\.\d+|\d+',variables[variable]['hist'])]
     htmp.SetTitle(';' + variables[variable]['title']
-                  + (';events %s %s '% ( fformat((bounds[2]-bounds[1])/bounds[0]),
+                  + (';events {0!s} {1!s} '.format(fformat((bounds[2]-bounds[1])/bounds[0]),
                                             variables[variable].get('unit',''))    ))
     htmp.Reset()
     if  options.allloghist or variables[variable]['log']:
@@ -822,7 +822,7 @@ def draw_instack(variable, label='VBF', select=''):
         draw_labels('w/o cuts')
     else:
         draw_labels(plotlabels['name'])
-    draw_cms_headlabel(label_right='#sqrt{s} = 13 TeV, L = %1.2f fb^{-1}' % treeinfo.get('lumi',2.63))
+    draw_cms_headlabel(label_right='#sqrt{{s}} = 13 TeV, L = {0:1.2f} fb^{{-1}}'.format(treeinfo.get('lumi',2.63)))
     
     c.cd()
     c.cd(2)

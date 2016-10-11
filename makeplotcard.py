@@ -33,7 +33,7 @@ def create_json(rootfile='file.root', treename='', jout=''):
     # create list of variables
     varlist={}
     for var in tree.GetListOfLeaves():
-        print ('variable: %25s' % var.GetTitle())
+        print ('variable: {0:25!s}'.format(var.GetTitle()))
         varlist[var.GetTitle()]={'title':'','hist':'(100,0,100)','norm':False,'log':False, 'cut':''}
         # create a json file
     samples     = json.loads(open('config/samples.json').read())
