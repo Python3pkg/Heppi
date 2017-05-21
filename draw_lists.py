@@ -23,4 +23,4 @@ for sam in  data:
     
 
 mul.Draw("APL")
-raw_input()
+input()

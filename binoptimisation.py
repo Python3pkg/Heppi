@@ -35,10 +35,10 @@ def draw_labels(label, position='tl', size=0.03):
         xpos = (0.65  - ROOT.gStyle.GetPadLeftMargin())
         ypos = (0.2   + ROOT.gStyle.GetPadBottomMargin())
 
-    print 'labels ::' , label
+    print('labels ::' , label)
     for s in label.split('\\'):
         t.DrawLatexNDC(xpos,ypos - shift,s)
-        print 'shift', shift
+        print('shift', shift)
         shift = shift + (size+0.005)
         
 def draw_point(x,y, size=0.01, color=121):
@@ -72,7 +72,7 @@ def draw_ROC(var ='dipho_dijet_MVA',
         cutflow = 'weight'
     
     # === loop over the samples
-    ordsam = OrderedDict(sorted(heppi.samples.items(), key=lambda x: x[1]['order']))
+    ordsam = OrderedDict(sorted(list(heppi.samples.items()), key=lambda x: x[1]['order']))
     for proc in ordsam:
         tree  = heppi.samples[proc].get('_root_tree_')#roof.Get(treename.replace('*',proc))
         histstr = '({0:d},{1:f},{2:f})'.format(int(400), -1, 1)
@@ -85,7 +85,7 @@ def draw_ROC(var ='dipho_dijet_MVA',
             cutflow
         )
         if heppi.samples[proc]['label']!= 'Signal' and proc in bkg:
-            print '--> have ', proc
+            print('--> have ', proc)
             hbkg.Add(ROOT.gDirectory.Get('h_'+var))
         if heppi.samples[proc]['label']== 'signal':
             hsig.Add(ROOT.gDirectory.Get('h_'+var))
@@ -110,7 +110,7 @@ def draw_ROC(var ='dipho_dijet_MVA',
         #print beff, '  ', seff
         for cat in categories:
             if abs(hsig.GetBinCenter(int(ibin))-cat) < 0.005 :
-                print 'diff :: val(', hsig.GetBinCenter(ibin),') ',abs(hsig.GetBinCenter(int(ibin))-cat)
+                print('diff :: val(', hsig.GetBinCenter(ibin),') ',abs(hsig.GetBinCenter(int(ibin))-cat))
                 p = ROOT.TEllipse(beff,seff,0.013,0.013)
                 p.SetFillColor(2)
                 p.SetLineWidth(0)
@@ -187,7 +187,7 @@ def GetBondaryBin(var    = 'dijet_BDT',
         cutflow = 'weight'
         
     # === loop over the samples
-    ordsam = OrderedDict(sorted(heppi.samples.items(), key=lambda x: x[1]['order']))
+    ordsam = OrderedDict(sorted(list(heppi.samples.items()), key=lambda x: x[1]['order']))
     for proc in ordsam:
         tree  = heppi.samples[proc].get('_root_tree_')#roof.Get(treename.replace('*',proc))
         histstr = '({0:d},{1:f},{2:f})'.format(int(nbin), -1, 1)
@@ -224,7 +224,7 @@ def GetBondaryBin(var    = 'dijet_BDT',
 
     bar    = ProgressBar(widgets=[colored('-- variables:: {0:20!s}   '.format(variable), 'green'),
                                   Percentage(),'  ' ,Bar('>'), ' ', ETA()], term_width=100)
-    for ibin in bar(range(0, hsig.GetNbinsX()+1)):
+    for ibin in bar(list(range(0, hsig.GetNbinsX()+1))):
         Z  = 0
         if fom == 'signif':
             beff = hbkg.Integral(ibin,hsig.GetNbinsX())#hbkg.Integral() 
@@ -255,7 +255,7 @@ def GetBondaryBin(var    = 'dijet_BDT',
     line.SetLineStyle(7)
     line.DrawLine(catvalue[0],0,catvalue[0],catvalue[1])
     
-    print 'category (',catidx,') boundary [',catvalue[0],'][',catvalue[1],']'
+    print('category (',catidx,') boundary [',catvalue[0],'][',catvalue[1],']')
     draw_labels(('Category VBF-{0:d}'.format(catidx))+ ' \\BDT > '+('{0:1.3f}'.format(catvalue[0])))
     c.SaveAs('plots/fom_cat'+ str(catidx) + '.pdf')
     c.SaveAs('plots/fom_cat'+ str(catidx) + '.png')
@@ -310,7 +310,7 @@ def GetCategoryBounds(var    = 'dijet_BDT',
         cutflow = 'weight'
         
     # === fill hitograms
-    ordsam = OrderedDict(sorted(heppi.samples.items(), key=lambda x: x[1]['order']))
+    ordsam = OrderedDict(sorted(list(heppi.samples.items()), key=lambda x: x[1]['order']))
     for proc in ordsam:
         tree  = heppi.samples[proc].get('_root_tree_')#roof.Get(treename.replace('*',proc))
         histstr = '({0:d},{1:f},{2:f})'.format(int(nbin), -1, 1)
@@ -341,7 +341,7 @@ def GetCategoryBounds(var    = 'dijet_BDT',
     hbkg.Smooth(smooth_index)
     h_roc_sig = ROOT.TH2F('h_roc_sig',';mva_{0};mva_{1};z^{2}', nbin, -1,1, nbin,-1,1)
     h_roc_bkg = ROOT.TH2F('h_roc_bkg',';mva_{0};mva_{1};z^{2}', nbin, -1,1, nbin,-1,1)
-    for ibin in bar(range(0, hsig.GetNbinsX()+1)):
+    for ibin in bar(list(range(0, hsig.GetNbinsX()+1))):
         for jbin in range(0, hsig.GetNbinsX()+1):
             if (jbin > ibin): continue
             z = significance(hsig, hbkg,
@@ -375,7 +375,7 @@ def GetCategoryBounds(var    = 'dijet_BDT',
     h_phaseSpace.Draw('colz,CONT3')
     p.Draw()
     
-    print 'bounds == [',opt_bounds[0], ']'
+    print('bounds == [',opt_bounds[0], ']')
     #draw_labels(('Category VBF-%i' % catidx)+ ' \\BDT > '+('%1.3f'%catvalue[0]))
     c.SaveAs('plots/fom_cat_bounds_scan_smooth_{0:d}.pdf'.format(smooth_index))
     c.SaveAs('plots/fom_cat_bounds_scan_smooth_{0:d}.png'.format(smooth_index))
@@ -398,7 +398,7 @@ def GetCategoryBounds(var    = 'dijet_BDT',
     c2.cd(2)
     h_roc_bkg.Draw('colz')
     
-    raw_input('.......')
+    input('.......')
     c2.SaveAs('plots/fom_cdt_bounds_scan_smooth_{0:d}.pdf'.format(smooth_index))
     c2.SaveAs('plots/fom_cdt_bounds_scan_smooth_{0:d}.png'.format(smooth_index))
     
@@ -447,7 +447,7 @@ def GetCategoryPDFBounds(var    = 'dijet_BDT',
         cutflow = 'weight'
         
     # === fill hitograms
-    ordsam = OrderedDict(sorted(heppi.samples.items(), key=lambda x: x[1]['order']))
+    ordsam = OrderedDict(sorted(list(heppi.samples.items()), key=lambda x: x[1]['order']))
     for proc in ordsam:
         tree  = heppi.samples[proc].get('_root_tree_')#roof.Get(treename.replace('*',proc))
         histstr = '({0:d},{1:f},{2:f})'.format(int(nbin), -1, 1)
@@ -475,7 +475,7 @@ def GetCategoryPDFBounds(var    = 'dijet_BDT',
 
     hsig.Smooth(4)
     hbkg.Smooth(4)
-    for ibin in bar(range(0, hsig.GetNbinsX()+1)):
+    for ibin in bar(list(range(0, hsig.GetNbinsX()+1))):
         for jbin in range(0, hsig.GetNbinsX()+1):
             if (jbin > ibin): continue
             z = significance(hsig, hbkg,
@@ -506,8 +506,8 @@ def GetCategoryPDFBounds(var    = 'dijet_BDT',
     p = ROOT.TEllipse(opt_bounds[0][0],opt_bounds[0][1],0.013,0.013)
     h_phaseSpace.Draw('colz,CONT4')
     p.Draw()
-    raw_input('.......')
-    print 'bounds == [',opt_bounds[0], ']'
+    input('.......')
+    print('bounds == [',opt_bounds[0], ']')
     #draw_labels(('Category VBF-%i' % catidx)+ ' \\BDT > '+('%1.3f'%catvalue[0]))
 
 
@@ -551,7 +551,7 @@ def print_categories(var, categories = None, select=''):
         logger.info('category( {0:d} ) &{1:12.3f} &&\\'.format(categories.index(cat), cat))
         logger.info('\hline')
         logger.info('{0:12!s} &{1:12!s} &{2:12!s} &{3:12!s} \\'.format('process', 'total event', 'selection', 'efficiency'))
-        ordsam = OrderedDict(sorted(heppi.samples.items(), key=lambda x: x[1]['order']))
+        ordsam = OrderedDict(sorted(list(heppi.samples.items()), key=lambda x: x[1]['order']))
         for proc in ordsam:
             tree  = heppi.samples[proc].get('_root_tree_')
             cutflow_sel = ''
@@ -819,7 +819,7 @@ if __name__ == "__main__":
     heppi.draw_cms_headlabel(label_right='')
     legend.Draw()
         
-    raw_input()
+    input()
     #dijet_roc_ggf = draw_ROC(var       =  'combined_BDT'     ,
     #                         label     =  'combined_with_cat_data' ,
     #                         axistitle =  ';#varepsilon_{Data};#varepsilon_{VBF}',

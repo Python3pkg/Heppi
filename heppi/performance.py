@@ -1,4 +1,4 @@
-import heppi
+from . import heppi
 import ROOT
 
 def load_cpp_libraries():

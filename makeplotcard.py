@@ -17,8 +17,8 @@ def create_json(rootfile='file.root', treename='', jout=''):
     """
     dumper = treename.split("*")[0]
     treerf = treename.split("*")[1]
-    print 'dumper', dumper
-    print 'treerf', treerf
+    print('dumper', dumper)
+    print('treerf', treerf)
     root = ROOT.TFile.Open(rootfile)
     tree_dir = root.Get(dumper+'trees')
     
@@ -27,13 +27,13 @@ def create_json(rootfile='file.root', treename='', jout=''):
         if treerf in a.GetName():
             treenm = a.GetName()
     tree = ROOT.gDirectory.Get(dumper+'trees/'+treenm)
-    print dumper+'trees/'+treenm
+    print(dumper+'trees/'+treenm)
     #if tree.GetEntries()==0:
     #    print 'ERROR: the tree is empty ...'
     # create list of variables
     varlist={}
     for var in tree.GetListOfLeaves():
-        print ('variable: {0:25!s}'.format(var.GetTitle()))
+        print(('variable: {0:25!s}'.format(var.GetTitle())))
         varlist[var.GetTitle()]={'title':'','hist':'(100,0,100)','norm':False,'log':False, 'cut':''}
         # create a json file
     samples     = json.loads(open('config/samples.json').read())

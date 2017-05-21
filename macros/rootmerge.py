@@ -20,14 +20,14 @@ outdir     = 'merged/'
 os.system('mkdir -p ' + outdir)
 
 for sam in samples:
-    print '---------------------------------------------------'
+    print('---------------------------------------------------')
     flist = glob.glob( '*.root')
     mergefname = ''
     allfiles   = ''
     for f in flist:
         for p in samples[sam]:
             if p in f:
-                print '\t sample:',sam,'  files::', f
+                print('\t sample:',sam,'  files::', f)
                 mergefname = f.replace('_'+f.split('_')[-1:][0],'.root')
                 allfiles   = allfiles +' '+ f 
     cmd = 'hadd -f ' + outdir + mergefname + ' ' + allfiles

@@ -5,5 +5,5 @@ __email__   = 'yhaddad@cern.ch'
 __version__ = '0.2.0'
 
 
-import heppi
+from . import heppi
 #import settings
